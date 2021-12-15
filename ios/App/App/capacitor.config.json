@@ -1,0 +1,6 @@
+{
+	"appId": "com.jamelhammoud.mamera",
+	"appName": "Mamera",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}

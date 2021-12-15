@@ -3,6 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@capacitor-community/media": "github:dragermrb/media",
+    "@capacitor-community/react-hooks": "^0.0.11",
+    "@capacitor/app-launcher": "^1.0.7",
+    "@capacitor/camera": "^1.2.2",
+    "@capacitor/core": "^3.3.3",
+    "@capacitor/filesystem": "^1.0.6",
+    "@capacitor/ios": "^3.3.3",
+    "@capacitor/share": "^1.0.7",
+    "@heroicons/react": "^1.0.5",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -22,6 +31,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "ios": "react-scripts build && npx cap run ios",
+    "sync": "npx cap sync",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -43,5 +54,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^3.3.3"
   }
 }

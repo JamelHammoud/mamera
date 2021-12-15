@@ -5,6 +5,7 @@ import { Global } from './utils/global'
 import { theme } from './utils/theme'
 
 import { ExampleView } from './views/ExampleView'
+import { CameraView } from './views/CameraView'
 
 const App = () => {
   return (
@@ -13,7 +14,7 @@ const App = () => {
       <Router>
         {/* Routes here */}
         <Switch>
-          <Route path={ROUTES.App.home} component={ExampleView} exact/>
+          <Route path={ROUTES.App.home} component={CameraView} exact/>
         </Switch>
       </Router>
     </ThemeProvider>
