@@ -5,6 +5,16 @@ type StyledProps = {
 }
 
 const StyledCameraView = styled.div<StyledProps>`
+  & > div:first-child {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0 auto;
+    z-index: 9999999;
+    pointer-events: none;
+  }
+
   .app-layout {
     padding-top: env(safe-area-inset-top);
     background-color: black;
@@ -145,6 +155,21 @@ const StyledCameraView = styled.div<StyledProps>`
     }
   }
 
+  .loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+    z-index: 999;
+  }
+
   .continue-prompt {
     display: flex;
     align-items: center;
@@ -212,7 +237,7 @@ const StyledCameraView = styled.div<StyledProps>`
         grid-gap: 1rem;
 
         button {
-          border-radius: 3px;
+          border-radius: 10px;
           width: 100%;
           display: flex;
           padding: 0;
@@ -223,6 +248,21 @@ const StyledCameraView = styled.div<StyledProps>`
           justify-content: center;
           color: white;
           background: rgba(255, 255, 255, 0.2);
+
+          .downloaded-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            svg {
+              margin-left: 10px;
+              height: 20px;
+            }
+          }
+
+          &:last-child {
+            margin-top: 1rem;
+          }
         }
         
         .share-btn {

@@ -4,7 +4,6 @@ import { ThemeProvider } from 'styled-components'
 import { Global } from './utils/global'
 import { theme } from './utils/theme'
 
-import { ExampleView } from './views/ExampleView'
 import { CameraView } from './views/CameraView'
 
 const App = () => {
