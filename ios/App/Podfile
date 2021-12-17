@@ -9,6 +9,7 @@ install! 'cocoapods', :disable_input_output_paths => true
 def capacitor_pods
   pod 'Capacitor', :path => '../../node_modules/@capacitor/ios'
   pod 'CapacitorCordova', :path => '../../node_modules/@capacitor/ios'
+  pod 'ByteowlsCapacitorFilesharer', :path => '../../node_modules/@byteowls/capacitor-filesharer'
   pod 'CapacitorCommunityMedia', :path => '../../node_modules/@capacitor-community/media'
   pod 'CapacitorAppLauncher', :path => '../../node_modules/@capacitor/app-launcher'
   pod 'CapacitorCamera', :path => '../../node_modules/@capacitor/camera'

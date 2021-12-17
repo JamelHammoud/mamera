@@ -2,6 +2,7 @@ import loadingAnimation from './loading-peace.gif'
 import { createRef, FC, useEffect, useRef, useState } from 'react'
 import Reward, { RewardElement } from 'react-rewards'
 import { AppLauncher } from '@capacitor/app-launcher'
+import { FileSharer } from '@byteowls/capacitor-filesharer'
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera'
 import { LocalNotifications } from '@capacitor/local-notifications'
 import { Share } from '@capacitor/share'
@@ -137,7 +138,6 @@ const CameraView: FC = () => {
       setDownloaded(true)
   
       await share({
-        text: 'This photo was merged in Mamera. Meow.',
         url: savedPhoto.filePath
       })
     }
@@ -327,7 +327,7 @@ const CameraView: FC = () => {
                 className="reset-btn"
                 onClick={() => reset()}
               >
-                Make a new merge
+                Make a New Merge
               </button>
             </div>
           </div>

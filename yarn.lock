@@ -1184,6 +1184,13 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@byteowls/capacitor-filesharer@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@byteowls/capacitor-filesharer/-/capacitor-filesharer-3.0.0.tgz#900fdaba58fa8319a5e579edd02a377623dea191"
+  integrity sha512-7/ZL7eyK/7aZx7A5q2PtKc8s9jWAlHXmPOpINkEeoQ09xZNuKUFR/lxruPDgSJE+4/4wM5M4uxUBYCndmwXOSA==
+  dependencies:
+    file-saver "^2.0.5"
+
 "@capacitor-community/media@github:dragermrb/media":
   version "2.0.0"
   resolved "https://codeload.github.com/dragermrb/media/tar.gz/8c53c18c911c4375445c6d936d7151a5c9e16274"
@@ -5299,6 +5306,11 @@ file-loader@6.1.1:
   dependencies:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
+
+file-saver@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-2.0.5.tgz#d61cfe2ce059f414d899e9dd6d4107ee25670c38"
+  integrity sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==
 
 file-uri-to-path@1.0.0:
   version "1.0.0"
