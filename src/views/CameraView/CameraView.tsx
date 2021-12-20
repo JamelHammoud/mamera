@@ -1,56 +1,35 @@
 import loadingAnimation from './loading-peace.gif'
-import { createRef, FC, useEffect, useRef, useState } from 'react'
 import Reward, { RewardElement } from 'react-rewards'
+import { createRef, FC, useEffect, useRef, useState } from 'react'
 import { AppLauncher } from '@capacitor/app-launcher'
-import { FileSharer } from '@byteowls/capacitor-filesharer'
+import { Directory, Filesystem } from '@capacitor/filesystem'
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera'
 import { LocalNotifications } from '@capacitor/local-notifications'
 import { Share } from '@capacitor/share'
 import { Media } from '@capacitor-community/media'
 import { CheckIcon, CubeTransparentIcon, RefreshIcon, ViewGridAddIcon } from '@heroicons/react/outline'
-import { StyledCameraView } from '.'
 import { Spinner } from '../../components/Spinner'
+import { StyledCameraView } from '.'
 
 const CameraView: FC = () => {
   const { getPhoto, requestPermissions } = Camera
-  const { openUrl } = AppLauncher
+  const { writeFile } = Filesystem
   const { share } = Share
+  const { openUrl } = AppLauncher
   const { savePhoto } = Media
   const { schedule, getPending } = LocalNotifications
 
   const [loading, setLoading] = useState(false)
+  const [showedPrompt, setShowedPrompt] = useState(false)
   const [downloaded, setDownloaded] = useState(false)
   const [continued, setContinued] = useState(false)
   const [clickedShareBtn, setClickedShareBtn] = useState(false)
-  const [clickedDownloadBtn, setClickedDownloadBtn] = useState(false)
   const [takenPhotos, setTakenPhotos] = useState<string[]>([])
 
   const outputRef = createRef<HTMLCanvasElement>()
   const rewardRef = useRef(createRef<RewardElement>())
 
-  const showReward = () => {
-    rewardRef.current?.current?.rewardMe()
-  }
-
-  const notifyMe = async () => {
-    const permissions = await LocalNotifications.requestPermissions()
-    const pendingNotifications = await getPending()
-    const alreadyScheduled = pendingNotifications.notifications.find((notification) => notification.id === 52635)
-
-    if (permissions.display !== 'denied' && !alreadyScheduled) {
-      await schedule({
-        notifications: [{
-          id: 52635,
-          title: 'Wanna waste some time?',
-          body: 'How about you take some random photos and MERGE THEM.. Cool right?',
-          schedule: {
-            every: 'week'
-          }
-        }]
-      })
-    }
-  }
-
+  // Gets required permissions
   const getPermission = async () => {
     const permissions = await requestPermissions({
       permissions: ['camera', 'photos']
@@ -61,6 +40,7 @@ const CameraView: FC = () => {
     }
   }
 
+  // Opens the user's camera
   const takePicture = async () => {
     const photo = await getPhoto({
       quality: 100,
@@ -75,20 +55,23 @@ const CameraView: FC = () => {
     setTakenPhotos((photos) => photos.concat(photo.webPath!))
   }
 
+  // Resets the group and opens the camera
   const reset = async () => {
     setContinued(false)
     setLoading(false)
     setDownloaded(false)
     setClickedShareBtn(false)
-    setClickedDownloadBtn(false)
     setTakenPhotos(() => [])
     await takePicture()
   }
 
+  // Shows the loading screen and
+  // merges the group
   const continueToMerge = async () => {
     try {
       setLoading(true)
       setContinued(true)
+      setShowedPrompt(true)
       await merge(takenPhotos)
     }
     finally {
@@ -99,11 +82,18 @@ const CameraView: FC = () => {
     }
   }
 
+  // Shares the photo to Instagram
   const sharePhotoToInstagram = async () => {
     const photoUrl = outputRef.current?.toDataURL('image/jpeg', 0.5)
 
     if (!photoUrl) {
       return
+    }
+
+    if (downloaded) {
+      return await openUrl({ 
+        url: `instagram://library?LocalIdentifier=mamera`
+      })
     }
 
     const savedPhoto = await savePhoto({
@@ -112,33 +102,34 @@ const CameraView: FC = () => {
         name: 'Mamera'
       }
     })
-    setDownloaded(true)
 
     await openUrl({ 
       url: `instagram://library?LocalIdentifier=${savedPhoto.filePath}`
     })
+
+    setDownloaded(true)
   }
 
+  // Opens the share drawer with the image
   const sharePhoto = async () => {
     try {
-      const photoUrl = outputRef.current?.toDataURL('image/jpeg', 0.5)
+      const photoUrl = outputRef.current?.toDataURL()
       setClickedShareBtn(true)
   
       if (!photoUrl) {
         return
       }
   
-      const savedPhoto = await savePhoto({
-        path: photoUrl,
-        album: {
-          name: 'Mamera'
-        }
+      const result = await writeFile({
+        path: 'Share Your Merge | Mamera.png',
+        data: photoUrl,
+        directory: Directory.Documents
       })
-  
-      setDownloaded(true)
-  
+    
       await share({
-        url: savedPhoto.filePath
+        url: result.uri,
+        title: 'This photo was merged in Mamera. Meow.',
+        dialogTitle: 'Share Your Merge'
       })
     }
     finally {
@@ -160,10 +151,12 @@ const CameraView: FC = () => {
       }
     })
 
-    setClickedDownloadBtn(true)
     setDownloaded(true)
   }
 
+  // Loops over each photo in the group, adding
+  // the RGB pixels together and then dividing by 
+  // the number of photos in the group.
   const merge = async (photos: string[]) => {
     const output = outputRef.current?.getContext('2d')
     const imageData: ImageData[] = []
@@ -215,11 +208,40 @@ const CameraView: FC = () => {
     }
   }
 
-  useEffect(() => {
+  // Resets the state
+  const resetState = () => {
     setContinued(false)
     setDownloaded(false)
     setClickedShareBtn(false)
-    setClickedDownloadBtn(false)
+  }
+
+  // Shows the confetti
+  const showReward = () => {
+    rewardRef.current?.current?.rewardMe()
+  }
+
+  // Schedules a notification every week
+  const notifyMe = async () => {
+    const permissions = await LocalNotifications.requestPermissions()
+    const pendingNotifications = await getPending()
+    const alreadyScheduled = pendingNotifications.notifications.find((notification) => notification.id === 52635)
+
+    if (permissions.display !== 'denied' && !alreadyScheduled) {
+      await schedule({
+        notifications: [{
+          id: 52635,
+          title: 'Wanna waste some time?',
+          body: 'How about you take some random photos and MERGE THEM.. Cool right?',
+          schedule: {
+            every: 'week'
+          }
+        }]
+      })
+    }
+  }
+
+  useEffect(() => {
+    resetState()
     getPermission()
     notifyMe()
   }, [])
@@ -275,6 +297,11 @@ const CameraView: FC = () => {
                   className="sub-btn"
                   disabled={takenPhotos.length < 2}
                 >
+                  {takenPhotos.length >= 2 && !showedPrompt && (
+                    <div className="merge-prompt">
+                      <span>Merge Group</span>
+                    </div>
+                  )}
                   <CubeTransparentIcon/>
                 </button>
               </div>
@@ -320,8 +347,9 @@ const CameraView: FC = () => {
               <button 
                 className="reset-btn"
                 onClick={() => downloadPhoto()}
+                disabled={downloaded}
               >
-                {clickedDownloadBtn ? <span className="downloaded-text">Downloaded <CheckIcon/></span> : 'Download'}
+                {downloaded ? <span className="downloaded-text">Downloaded <CheckIcon/></span> : 'Download'}
               </button>
               <button 
                 className="reset-btn"
