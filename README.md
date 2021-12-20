@@ -1,4 +1,4 @@
-# Mamerea
+# <img align="left" src="https://user-images.githubusercontent.com/55815579/146818534-8e7c0170-f144-4f83-bdef-980071e9387b.png" width=40 height=40/> Mamera
 This stupidly silly app was developed to test [CapacitorJS](https://capacitorjs.com/). The app can be found on the [iOS App Store](https://apps.apple.com/ca/app/mamera/id1600575010).
 
 ## App Description
