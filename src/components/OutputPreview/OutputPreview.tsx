@@ -2,15 +2,15 @@ import { FC, RefObject } from 'react'
 import { StyledOutputPreview } from '.'
 
 type Props = {
-  ref: RefObject<HTMLCanvasElement>;
+  outputRef: RefObject<HTMLCanvasElement>;
 }
 
-const OutputPreview: FC<Props> = ({ ref }) => {
+const OutputPreview: FC<Props> = ({ outputRef }) => {
   return (
     <StyledOutputPreview>
       <div className="output">
         <canvas 
-          ref={ref} 
+          ref={outputRef} 
           width={1920} 
           height={1920}
         />

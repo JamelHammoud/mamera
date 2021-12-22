@@ -279,7 +279,7 @@ const CameraView: FC = () => {
         {continued && loading && <Loading/>}
 
         <AppLayout isContinued={continued} isFinished>
-          <OutputPreview ref={outputRef}/>
+          <OutputPreview outputRef={outputRef}/>
           <OutputMenu
             clickedShareBtn={clickedShareBtn}
             isDownloaded={downloaded}
