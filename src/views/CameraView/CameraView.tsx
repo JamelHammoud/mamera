@@ -1,4 +1,3 @@
-import loadingAnimation from './loading-peace.gif'
 import Reward, { RewardElement } from 'react-rewards'
 import { createRef, FC, useEffect, useRef, useState } from 'react'
 import { AppLauncher } from '@capacitor/app-launcher'
@@ -7,8 +6,12 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera'
 import { LocalNotifications } from '@capacitor/local-notifications'
 import { Share } from '@capacitor/share'
 import { Media } from '@capacitor-community/media'
-import { CheckIcon, CubeTransparentIcon, RefreshIcon, ViewGridAddIcon } from '@heroicons/react/outline'
-import { Spinner } from '../../components/Spinner'
+import { AppLayout } from '../../components/AppLayout'
+import { PhotoList } from '../../components/PhotoList'
+import { MobileMenu } from '../../components/MobileMenu'
+import { Loading } from '../../components/Loading'
+import { OutputPreview } from '../../components/OutputPreview'
+import { OutputMenu } from '../../components/OutputMenu'
 import { StyledCameraView } from '.'
 
 const CameraView: FC = () => {
@@ -161,7 +164,7 @@ const CameraView: FC = () => {
     const output = outputRef.current?.getContext('2d')
     const imageData: ImageData[] = []
 
-    for await (const imageSrc of photos) {
+    for (const imageSrc of photos) {
       const canvas = document.createElement('canvas')
       canvas.height = 1920
       canvas.width = 1920
@@ -260,106 +263,32 @@ const CameraView: FC = () => {
         }}
       >
         {!continued && (
-          <div className="app-layout">
-            <ul className="photo-list">
-              {takenPhotos.map((photo, index) => {
-                return (
-                  <li key={index}>
-                    <img src={photo}/>
-                  </li>
-                )
-              })}
-              {takenPhotos.length < 2 && (
-                <li className="placeholder">
-                  <div className="placeholder-text">
-                    <span>Add {2 - takenPhotos.length} (or more) image{takenPhotos.length === 0 && 's'} to <b><CubeTransparentIcon/> Merge</b>.</span>
-                  </div>
-                </li>
-              )}
-            </ul>
+          <AppLayout>
+            <PhotoList photos={takenPhotos}/>
 
-            <div className="mobile-menu-container">
-              <div className="mobile-menu">
-                <button 
-                  onClick={() => reset()}
-                  className="sub-btn"
-                >
-                  <RefreshIcon/>
-                </button>
-                <button 
-                  onClick={() => takePicture()}
-                  className="photo-btn"
-                >
-                  <ViewGridAddIcon/>
-                </button>
-                <button 
-                  onClick={() => continueToMerge()}
-                  className="sub-btn"
-                  disabled={takenPhotos.length < 2}
-                >
-                  {takenPhotos.length >= 2 && !showedPrompt && (
-                    <div className="merge-prompt">
-                      <span>Merge Group</span>
-                    </div>
-                  )}
-                  <CubeTransparentIcon/>
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {continued && loading && (
-          <div className="loading-screen">
-            <img 
-              src={loadingAnimation} 
-              height={100} 
-              width={100} 
-              alt="Loading..."
+            <MobileMenu
+              photos={takenPhotos}
+              showedPrompt={showedPrompt}
+              reset={() => reset()}
+              takePicture={() => takePicture()}
+              continueToMerge={() => continueToMerge()}
             />
-          </div>
+          </AppLayout>
         )}
 
-        <div className="app-layout finished">
-          <div className="output-sizer">
-            <div className="output">
-              <canvas 
-                ref={outputRef} 
-                width={1920} 
-                height={1920}
-              />
-            </div>
-          </div>
-          <div className="share-menu-container">
-            <div className="share-menu">
-              <button 
-                className="share-btn"
-                onClick={() => sharePhotoToInstagram()}
-              >
-                Share to Instagram
-              </button>
-              <button 
-                className="share-btn"
-                onClick={() => sharePhoto()}
-              >
-                {clickedShareBtn ? <Spinner/> : 'Share to Other Places'}
-              </button>
-              <button 
-                className="reset-btn"
-                onClick={() => downloadPhoto()}
-                disabled={downloaded}
-              >
-                {downloaded ? <span className="downloaded-text">Downloaded <CheckIcon/></span> : 'Download'}
-              </button>
-              <button 
-                className="reset-btn"
-                onClick={() => reset()}
-              >
-                Make a New Merge
-              </button>
-            </div>
-          </div>
-        </div>  
+        {continued && loading && <Loading/>}
+
+        <AppLayout isContinued={continued} isFinished>
+          <OutputPreview ref={outputRef}/>
+          <OutputMenu
+            clickedShareBtn={clickedShareBtn}
+            isDownloaded={downloaded}
+            reset={reset}
+            downloadPhoto={downloadPhoto}
+            sharePhoto={sharePhoto}
+            sharePhotoToInstagram={sharePhotoToInstagram}
+          />
+        </AppLayout>
       </Reward>
     </StyledCameraView>
   )
