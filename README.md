@@ -1,34 +1,32 @@
 # <img align="left" src="https://user-images.githubusercontent.com/55815579/146818534-8e7c0170-f144-4f83-bdef-980071e9387b.png" width=40 height=40/> Mamera
-This stupidly silly app was developed in a day to test [CapacitorJS](https://capacitorjs.com/). The app is published and can be found on the [iOS App Store](https://apps.apple.com/ca/app/mamera/id1600575010).
+> This repo is focused on mobile app development for iOS. Although you may be able to build to Android from this repo, this ReadMe was written for iOS development.
 
-> Ever wanted to use a truly useless (yet functional) iPhone application? Well, your prayers have finally been answered!
-> 
-> Mamera is a stupidly ridiculous app that lets you combine unlimited images together to form a Merge.
-> 
-> Yep, you heard me correctly, take as many photos as you want and leverage the power of artificial unintelligence to combine them into one skewed and distorted image.
-> 
-> Once you've created your merge, you have four options: Share to Instagram, Share to Other Places, Download and Make A New Merge. Well, if we're being real, you have more than those four options, you could throw your phone on the ground, go paragliding or buy some antique porcelain dolls, but why would you?
-> 
-> PS: You get a notification every week to create a merge. Yep, that happens. I told dev that beta testers complained it was annoying and asked if they could fix it and they said that it's a system bug and that we should start marketing it as a feature.
+This ReactJS app was developed in a day to test [CapacitorJS](https://capacitorjs.com/). The intention was to evaluate Capactitor's ability to build to iOS, the ease of leveraging native functionality in a web-based app, and Apple's approval process for webview applications. The app was published and can be found on the [iOS App Store](https://apps.apple.com/ca/app/mamera/id1600575010).
+
+<br/>
 
 ## Quick Start
 #### Prerequisites
-* Device running MacOS
-* Xcode installed
+* You have access to a device capable of running MacOS
+* [Xcode](https://apps.apple.com/us/app/xcode/id497799835) is installed
 
 #### Setting Up
 1. Clone the repo
-2. Open terminal
+2. Open Terminal
 3. Install all dependencies using `yarn install`
 4. Open the project in Xcode with `yarn open`
 5. Sync your files with Xcode with `yarn sync`
 6. Build your code (which can then be launched in the simulator or on your physical device) with `yarn ios` 
 
 #### How Do I Test on a Physical Device?
-To test on a physical device, plug your iOS device into your MacOS device. After running `yarn ios`, select your physical device from the list of available devices. After it's finished loading, you should see your phone open the application. I've personally found that if you have an Apple Watch connected to your phone while Xcode is building, the build will fail. I've delt with this by simply switching my watch to airplane mode every time I want to build to my phone (which isn't really ideal, but it works).
+To test on a physical device, plug your iOS device into your MacOS device. After running `yarn ios`, select your physical device from the list of available devices. After it's finished loading, you should see your phone open the application. 
+
+_I've personally found that if you have an Apple Watch connected to your phone while Xcode is building, the build will fail. I've dealt with this by simply switching my watch to airplane mode every time I want to build to my phone (which isn't ideal, but it works)._
+
+<br/>
 
 ## Code Conventions
-* Uses [Typescript](https://www.typescriptlang.org/) & [Yarn](https://yarnpkg.com/)
+* Uses [Yarn](https://yarnpkg.com/), [ReactJS](https://reactjs.org/), [Typescript](https://www.typescriptlang.org/) & [Styled Components](https://styled-components.com/)
 * All components live within the `components` folder
   * A component is a reusable 'piece' of the app (ex: button, video player)
 * All views live within the `views` folder
@@ -40,6 +38,23 @@ To test on a physical device, plug your iOS device into your MacOS device. After
   * ComponentName.tsx (used for the actual component)
   * ComponentName.Styled.tsx (used for the styled component)
 
+<br/>
+
+## Attribution
+#### CapacitorJS Plugins
+* @capacitor-community/media
+  * Used [Manuel Rodríguez's](https://github.com/dragermrb/media) fork of the official repo to mitigate issues
+* [@capacitor/app-launcher](https://capacitorjs.com/docs/apis/app-launcher)
+* [@capacitor/camera](https://capacitorjs.com/docs/apis/camera)
+* [@capacitor/filesystem](https://capacitorjs.com/docs/apis/filesystem)
+* [@capacitor/local-notifications](https://capacitorjs.com/docs/apis/local-notifications)
+* [@capacitor/share](https://capacitorjs.com/docs/apis/share)
+
+#### Icons
+Used [Heroicons](https://heroicons.com/) for the app's icons.
+
+<br/>
+
 ## License
 
-[MIT License](http://opensource.org/licenses/MIT)
+This GitHub repository is provided by [Jamel Hammoud](https://jamelhammoud.com) under the [MIT License](http://opensource.org/licenses/MIT).
